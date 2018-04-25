@@ -4,7 +4,7 @@ PlasmaComponents.ToolButton {
     iconSource: model.state === mcws.statePlaying
                 ? "media-playback-pause"
                 : "media-playback-start"
-    flat: true
+    flat: false
     enabled: +playingnowtracks > 0
     onClicked: mcws.play(index)
 }

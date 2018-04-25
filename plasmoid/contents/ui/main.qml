@@ -20,10 +20,7 @@ Item {
     id: root
 
     property var hostModel:         plasmoid.configuration.hostList
-    property int panelViewSize:     theme.mSize(theme.defaultFont).width *
-                                        (plasmoid.configuration.useZoneCount
-                                            ? mcws.zoneModel.count*15
-                                            : plasmoid.configuration.trayViewSize)
+    property int trayViewSize:      plasmoid.configuration.trayViewSize
     property bool vertical:         plasmoid.formFactor === PlasmaCore.Types.Vertical
     property bool panelZoneView:    plasmoid.configuration.advancedTrayView & !vertical
 
@@ -72,7 +69,9 @@ Item {
 
     Plasmoid.compactRepresentation: Loader {
 
-        Layout.preferredWidth: panelZoneView ? panelViewSize : units.iconSizes.small
+        Layout.preferredWidth: panelZoneView
+                                ? theme.mSize(theme.defaultFont).width * (plasmoid.configuration.useZoneCount ? mcws.zoneModel.count*15 : trayViewSize)
+                                : units.iconSizes.small
 
         sourceComponent: mcws.isConnected
                         ? panelZoneView ? advComp : iconComp
@@ -324,7 +323,7 @@ Item {
                                         Layout.rightMargin: 3
                                         radius: 5
                                         color: "light green"
-                                        visible: (model.state === mcws.statePlaying || model.state === mcws.statePaused)
+                                        visible: model.state !== mcws.stateStopped
                                         NumberAnimation {
                                             running: model.state === mcws.statePaused
                                             target: stateInd
